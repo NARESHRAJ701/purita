@@ -62,7 +62,7 @@ export const StorySection: React.FC<StorySectionProps> = ({ onStoryClick }) => {
             </p>
 
             <p className="text-charcoal/65 text-sm md:text-base font-light leading-relaxed">
-              From Mysore sandalwood farms to alpine moss reserves and Kashmir saffron valleys, each PURITA batch honors the soil, water, and generational cultivators who nurture our raw botanicals.
+              From Mysore sandalwood farms to tropical neem & lime groves and Kashmir saffron valleys, each PURITA batch honors the soil, water, and generational cultivators who nurture our raw botanicals.
             </p>
 
             {/* Story CTA */}
@@ -104,8 +104,8 @@ export const StorySection: React.FC<StorySectionProps> = ({ onStoryClick }) => {
           >
             <div className="relative rounded-[32px] md:rounded-[40px] overflow-hidden shadow-botanical-lg border border-subtleBorder/30 group bg-cream">
               <img
-                src="/images/soap_bar_macro.jpg"
-                alt="Hand holding stamped PURITA soap bar over moss and white flowers"
+                src="/assets/nature_elements.png"
+                alt="Raw botanical elements: fresh turmeric, saffron threads, aloe vera, and citrus in pristine nature"
                 loading="lazy"
                 className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
               />
