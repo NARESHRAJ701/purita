@@ -58,7 +58,7 @@ export const PRODUCTS: Product[] = [
     ],
     specifications: {
       tfm: 'Grade 1 (76% Min)',
-      grade: '100% Vegetarian Toilet Soap',
+      grade: '100% Vegetarian  Soap',
       shelfLife: '36 Months from packaging',
       origin: 'Karnataka & Kerala, India',
     },
@@ -90,7 +90,7 @@ export const PRODUCTS: Product[] = [
     ],
     specifications: {
       tfm: 'Grade 1 (76% Min)',
-      grade: '100% Vegetarian Toilet Soap',
+      grade: '100% Vegetarian  Soap',
       shelfLife: '36 Months from packaging',
       origin: 'Kashmir & Nilgiris, India',
     },
@@ -122,7 +122,7 @@ export const PRODUCTS: Product[] = [
     ],
     specifications: {
       tfm: 'Grade 1 (76% Min)',
-      grade: '100% Vegetarian Toilet Soap',
+      grade: '100% Vegetarian  Soap',
       shelfLife: '36 Months from packaging',
       origin: 'Western Ghats, India',
     },
@@ -153,7 +153,7 @@ export const PRODUCTS: Product[] = [
     ],
     specifications: {
       tfm: 'Grade 1 (76% Min)',
-      grade: '100% Vegetarian Toilet Soap',
+      grade: '100% Vegetarian  Soap',
       shelfLife: '36 Months from packaging',
       origin: 'Kerala Coast, India',
     },
@@ -184,7 +184,7 @@ export const PRODUCTS: Product[] = [
     ],
     specifications: {
       tfm: 'Grade 1 (76% Min)',
-      grade: '100% Vegetarian Toilet Soap',
+      grade: '100% Vegetarian  Soap',
       shelfLife: '36 Months from packaging',
       origin: 'Uttar Pradesh & Kashmir, India',
     },

@@ -120,7 +120,7 @@ export const StorySection: React.FC<StorySectionProps> = ({ onStoryClick }) => {
               {/* Bottom Caption Pill */}
               <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-white/80 backdrop-blur-md border border-white/60 text-botanical flex items-center justify-between text-xs">
                 <span className="font-serif italic font-medium text-sm">
-                  100% Pure Botanical Toilet Soap
+                  100% Pure Botanical  Soap
                 </span>
                 <span className="text-[10px] tracking-widest uppercase bg-botanical text-cream px-2.5 py-1 rounded-full">
                   Grade 1
