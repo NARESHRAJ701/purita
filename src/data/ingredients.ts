@@ -78,7 +78,7 @@ export const HORIZONTAL_INGREDIENTS: HorizontalIngredient[] = [
     role: 'Purifies & Brightens',
     description: 'Non-staining wild kasturi manjal bursting with curcuminoids to clear blemishes and awaken luminous skin tone.',
     tags: ['Brightening', 'Antiseptic', 'Antioxidant'],
-    image: '/images/product_turmeric.png',
+    image: '/images/ingredient_turmeric_real.jpg',
   },
   {
     id: 'aloe-barbadensis',
@@ -89,7 +89,7 @@ export const HORIZONTAL_INGREDIENTS: HorizontalIngredient[] = [
     role: 'Quenches & Restores',
     description: 'Hand-filleted inner gel rich in acemannan polysaccharides that flood the dermis with cooling moisture.',
     tags: ['Deep Hydration', 'Enzymatic', 'Calming'],
-    image: '/images/product_aloe.png',
+    image: '/images/ingredient_aloe_real.jpg',
   },
   {
     id: 'kashmiri-saffron',
@@ -100,7 +100,7 @@ export const HORIZONTAL_INGREDIENTS: HorizontalIngredient[] = [
     role: 'Golden Glow',
     description: 'Delicate crimson threads harvested at dawn, prized for crocin that boosts cellular microcirculation.',
     tags: ['Luxury Radiance', 'Free Radical Defense'],
-    image: '/images/product_turmeric.png',
+    image: '/images/ingredient_saffron_real.jpg',
   },
   {
     id: 'virgin-coconut',
@@ -111,6 +111,6 @@ export const HORIZONTAL_INGREDIENTS: HorizontalIngredient[] = [
     role: 'Creamy Cushion Lather',
     description: 'Unrefined coconut milk and oil delivering fatty acids that cleanse thoroughly without stripping moisture.',
     tags: ['Rich Lather', 'Lauric Acid', 'Softness'],
-    image: '/images/product_coconut.png',
+    image: '/images/ingredient_coconut_real.jpg',
   },
 ];
