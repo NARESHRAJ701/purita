@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cream: #F6F3ED;
+  --cream-secondary: #EEE9DE;
+  --ivory: #FAF8F2;
+  --text: #161714;
+  --forest: #25301F;
+  --green: #526B36;
+  --moss: #71884D;
+  --muted-green: #879875;
+  --gold: #C49A38;
+  --turmeric: #D8A91F;
+  --sandal: #A87945;
+}
+
+/* Lenis Smooth Scroll Recommended Styles */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Custom Typography Clamps */
+.hero-heading {
+  font-size: clamp(2.5rem, 6vw + 0.5rem, 5.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.section-heading {
+  font-size: clamp(2rem, 4vw + 0.25rem, 3.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.card-heading {
+  font-size: clamp(1.5rem, 2vw + 0.25rem, 2rem);
+  line-height: 1.2;
+}
+
+/* Subtle Film Grain Texture Overlay */
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Subtle Water Caustic / Sun Reflection */
+.water-caustic {
+  background: radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.4) 0%, rgba(246, 243, 237, 0) 70%);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F6F3ED;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D8D2C4;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #879875;
+}
+
+/* Hide scrollbar for clean horizontal swipe containers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Botanical shadows */
+.botanical-shadow {
+  box-shadow: 0 30px 80px rgba(20, 24, 18, 0.07);
+}
+
+.botanical-card-shadow {
+  box-shadow: 0 16px 40px rgba(37, 48, 31, 0.05);
+}
+
+/* Clip path reveals */
+.clip-reveal-ready {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.clip-reveal-active {
+  clip-path: inset(0 0% 0 0);
+}
+
+/* Calligraphic script styling */
+.font-script {
+  font-family: 'Great Vibes', 'Alex Brush', cursive;
+}
+
+/* Button microinteractions */
+.btn-botanical {
+  background-color: #25301F;
+  color: #FAF8F2;
+  border-radius: 9999px;
+  padding: 14px 28px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 14px rgba(37, 48, 31, 0.15);
+}
+
+.btn-botanical:hover {
+  background-color: #35442E;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(37, 48, 31, 0.22);
+}
+
+.btn-botanical:hover .btn-arrow {
+  transform: translateX(5px);
+}
+
+.btn-arrow {
+  transition: transform 0.35s ease;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
