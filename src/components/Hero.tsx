@@ -15,7 +15,6 @@ export const Hero: React.FC<HeroProps> = ({ onWatchStory, onExploreClick }) => {
   const heroRef = useRef<HTMLElement>(null);
   const textGroupRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const mobileVideoRef = useRef<HTMLVideoElement>(null);
 
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
@@ -23,62 +22,59 @@ export const Hero: React.FC<HeroProps> = ({ onWatchStory, onExploreClick }) => {
   // Smooth mouse parallax for desktop
   const mouseOffset = useMouseParallax(1);
 
-  // Ensure mobile video plays smoothly
-  useEffect(() => {
-    if (mobileVideoRef.current) {
-      mobileVideoRef.current.play().catch(() => {});
-    }
-  }, []);
-
-  // GSAP entrance and ScrollTrigger depth layers
+  // GSAP entrance and ScrollTrigger depth layers (Desktop only)
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
-      // 1. Entrance timeline
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      const mm = gsap.matchMedia();
 
-      tl.fromTo(
-        '.hero-eyebrow',
-        { opacity: 0, y: 25 },
-        { opacity: 1, y: 0, duration: 0.8, delay: 0.15 }
-      )
-        .fromTo(
-          '.hero-heading-line',
-          { opacity: 0, y: 35 },
-          { opacity: 1, y: 0, duration: 0.95, stagger: 0.12 },
-          '-=0.45'
-        )
-        .fromTo(
-          '.hero-desc',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.8 },
-          '-=0.5'
-        )
-        .fromTo(
-          '.hero-actions',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.8 },
-          '-=0.5'
-        )
-        .fromTo(
-          '.hero-metrics',
-          { opacity: 0, y: 15 },
-          { opacity: 1, y: 0, duration: 0.8 },
-          '-=0.4'
-        );
+      mm.add('(min-width: 768px)', () => {
+        // 1. Entrance timeline
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-      // 2. Subtle text parallax on scroll
-      gsap.to('.hero-text-content', {
-        yPercent: -10,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1,
-        },
+        tl.fromTo(
+          '.hero-eyebrow',
+          { opacity: 0, y: 25 },
+          { opacity: 1, y: 0, duration: 0.8, delay: 0.15 }
+        )
+          .fromTo(
+            '.hero-heading-line',
+            { opacity: 0, y: 35 },
+            { opacity: 1, y: 0, duration: 0.95, stagger: 0.12 },
+            '-=0.45'
+          )
+          .fromTo(
+            '.hero-desc',
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.8 },
+            '-=0.5'
+          )
+          .fromTo(
+            '.hero-actions',
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.8 },
+            '-=0.5'
+          )
+          .fromTo(
+            '.hero-metrics',
+            { opacity: 0, y: 15 },
+            { opacity: 1, y: 0, duration: 0.8 },
+            '-=0.4'
+          );
+
+        // 2. Subtle text parallax on scroll
+        gsap.to('.hero-text-content', {
+          yPercent: -10,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: heroRef.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1,
+          },
+        });
       });
     }, heroRef);
 
@@ -109,27 +105,41 @@ export const Hero: React.FC<HeroProps> = ({ onWatchStory, onExploreClick }) => {
       className="relative overflow-hidden bg-[#161B14]"
     >
       {/* ============================================================== */}
-      {/* MOBILE VIDEO-LED HERO (< 768px)                                */}
+      {/* 1. UNIFIED FULL-BLEED VIDEO BACKGROUND                         */}
+      {/* Single video instance eliminates decoder conflicts & flicker   */}
       {/* ============================================================== */}
-      <div className="md:hidden relative w-full h-[540px] sm:h-[580px] overflow-hidden flex items-center bg-[#161B14]">
-        {/* Full-Bleed Video Background */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
-          <video
-            ref={mobileVideoRef}
-            src="/assets/video.mp4"
-            poster="/images/editorial_waterfall_soap.jpg"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            className="w-full h-full object-cover object-center scale-[1.02]"
-          />
-          {/* Natural Dark Gradient Scrims for Clean Typography Contrast */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/30 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/40 pointer-events-none" />
-        </div>
+      <div className="absolute inset-0 w-full h-full overflow-hidden z-0 pointer-events-none">
+        <video
+          ref={videoRef}
+          src="/assets/video.mp4"
+          poster="/images/video_poster.jpg"
+          autoPlay
+          loop
+          muted={isMuted}
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover object-center"
+          style={{
+            transform: 'translate3d(0, 0, 0)',
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+          }}
+        />
 
+        {/* Mobile Scrims (< 768px) */}
+        <div className="md:hidden absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/30 pointer-events-none" />
+        <div className="md:hidden absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/40 pointer-events-none" />
+
+        {/* Desktop Scrims (>= 768px) */}
+        <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-[#141A12]/90 via-[#141A12]/60 sm:via-[#141A12]/45 to-transparent/30 pointer-events-none" />
+        <div className="hidden md:block absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/55 pointer-events-none" />
+        <div className="hidden md:block absolute top-1/4 right-1/4 w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-amber-200/10 rounded-full blur-3xl pointer-events-none" />
+      </div>
+
+      {/* ============================================================== */}
+      {/* 2. MOBILE FOREGROUND CONTENT (< 768px)                         */}
+      {/* ============================================================== */}
+      <div className="md:hidden relative w-full h-[540px] sm:h-[580px] overflow-hidden flex items-center z-10">
         {/* Script Accent on Right */}
         <div className="absolute bottom-12 right-5 z-20 pointer-events-none select-none">
           <span className="font-script text-3xl text-white/90 drop-shadow-md">
@@ -173,27 +183,9 @@ export const Hero: React.FC<HeroProps> = ({ onWatchStory, onExploreClick }) => {
       </div>
 
       {/* ============================================================== */}
-      {/* DESKTOP HERO (>= 768px, UNTOUCHED)                             */}
+      {/* 3. DESKTOP FOREGROUND CONTENT (>= 768px)                       */}
       {/* ============================================================== */}
-      <div className="hidden md:flex relative min-h-[92vh] sm:min-h-screen pt-32 pb-20 md:pt-40 md:pb-28 items-center overflow-hidden w-full">
-        {/* 1. FULL-BLEED VIDEO BACKGROUND */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
-          <video
-            ref={videoRef}
-            src="/assets/video.mp4"
-            poster="/images/video_poster.jpg"
-            autoPlay
-            loop
-            muted={isMuted}
-            playsInline
-            className="w-full h-full object-cover object-center scale-[1.02]"
-          />
-
-          <div className="absolute inset-0 bg-gradient-to-r from-[#141A12]/90 via-[#141A12]/60 sm:via-[#141A12]/45 to-transparent/30 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/55 pointer-events-none" />
-          <div className="absolute top-1/4 right-1/4 w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-amber-200/10 rounded-full blur-3xl pointer-events-none" />
-        </div>
-
+      <div className="hidden md:flex relative min-h-[92vh] sm:min-h-screen pt-32 pb-20 md:pt-40 md:pb-28 items-center overflow-hidden w-full z-10">
         {/* Floating Leaves Subtle Parallax Layer */}
         <div
           className="hero-floating-leaves absolute inset-0 pointer-events-none z-10"
@@ -202,6 +194,9 @@ export const Hero: React.FC<HeroProps> = ({ onWatchStory, onExploreClick }) => {
             transition: 'transform 0.15s ease-out',
           }}
         >
+          <div className="absolute top-28 left-6 md:left-20 w-10 h-20 bg-emerald-400/10 rounded-full rotate-45 blur-md" />
+          <div className="absolute bottom-32 right-16 w-14 h-28 bg-amber-400/10 rounded-full -rotate-12 blur-lg" />
+        </div>
           <div className="absolute top-28 left-6 md:left-20 w-10 h-20 bg-emerald-400/10 rounded-full rotate-45 blur-md" />
           <div className="absolute bottom-32 right-16 w-14 h-28 bg-amber-400/10 rounded-full -rotate-12 blur-lg" />
         </div>

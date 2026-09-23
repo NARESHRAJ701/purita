@@ -177,3 +177,179 @@ html.lenis, html.lenis body {
     --mobile-padding: 20px;
   }
 }
+
+/* ========================================================================== */
+/* SHARED PRODUCT DETAIL MODAL SYSTEM                                         */
+/* Global layout rules ensuring zero overlap between image and product info   */
+/* ========================================================================== */
+
+.product-detail-modal {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  max-height: 92vh;
+  overflow: hidden;
+  background: #FAF8F2;
+  border-radius: 24px;
+  box-shadow: 0 25px 60px -15px rgba(20, 24, 18, 0.28);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+/* Standalone .modal support matching user specification */
+.modal {
+  max-height: 92vh;
+  overflow: hidden;
+}
+
+.modal-content,
+.product-detail-modal .modal-content {
+  overflow-y: auto;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal-header,
+.product-detail-modal .modal-header {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  pointer-events: auto;
+}
+
+.close-button,
+.product-detail-modal .close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #161714;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.close-button:hover,
+.product-detail-modal .close-button:hover {
+  background: #ffffff;
+  color: #000000;
+  transform: scale(1.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.product-image-section,
+.product-detail-modal .product-image-section {
+  position: relative;
+  width: 100%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 24px;
+  padding-bottom: 42px; /* Space reserved for absolute tagline */
+  overflow: hidden;
+  height: 250px; /* Standard mobile default (390px - 430px) */
+}
+
+@media (max-width: 375px) {
+  .product-image-section,
+  .product-detail-modal .product-image-section {
+    height: 240px;
+    padding-bottom: 38px;
+  }
+}
+
+@media (max-width: 360px) {
+  .product-image-section,
+  .product-detail-modal .product-image-section {
+    height: 230px;
+    padding-bottom: 36px;
+  }
+}
+
+@media (min-width: 640px) {
+  .product-image-section,
+  .product-detail-modal .product-image-section {
+    height: 270px;
+    padding-bottom: 44px;
+  }
+}
+
+.product-image,
+.product-detail-modal .product-image {
+  display: block;
+  width: 82%;
+  max-height: 175px;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+@media (max-width: 375px) {
+  .product-image,
+  .product-detail-modal .product-image {
+    max-height: 160px;
+  }
+}
+
+@media (max-width: 360px) {
+  .product-image,
+  .product-detail-modal .product-image {
+    max-height: 150px;
+  }
+}
+
+@media (min-width: 640px) {
+  .product-image,
+  .product-detail-modal .product-image {
+    max-height: 190px;
+  }
+}
+
+.product-tagline,
+.product-detail-modal .product-tagline {
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  pointer-events: none;
+}
+
+.product-info,
+.product-detail-modal .product-info {
+  position: relative;
+  width: 100%;
+  margin-top: 0;
+  padding: 22px 20px 32px;
+  background: #F8F5EA;
+  z-index: 2;
+}
+
+@media (min-width: 640px) {
+  .product-info,
+  .product-detail-modal .product-info {
+    padding: 24px 28px 36px;
+  }
+}
+
+.product-meta,
+.product-detail-modal .product-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
