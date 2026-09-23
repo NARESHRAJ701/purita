@@ -11,9 +11,14 @@ export function useMouseParallax(intensity: number = 1) {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    // Only run on desktop devices with hover capability
-    const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
-    if (isTouch || window.innerWidth < 1024) return;
+    if (typeof window === 'undefined') return;
+
+    const checkDisabled = () => {
+      const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+      return isTouch || window.innerWidth < 1024;
+    };
+
+    if (checkDisabled()) return;
 
     const mouse: MousePosition = {
       x: 0,
@@ -23,23 +28,32 @@ export function useMouseParallax(intensity: number = 1) {
     };
 
     let animationFrameId: number;
+    let isRunning = true;
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Normalize from -1 to 1 based on center of screen
+      if (checkDisabled()) return;
       const { innerWidth, innerHeight } = window;
       mouse.targetX = (e.clientX / innerWidth - 0.5) * 2;
       mouse.targetY = (e.clientY / innerHeight - 0.5) * 2;
     };
 
+    let lastX = 0;
+    let lastY = 0;
+
     const animate = () => {
-      // Linear interpolation for organic lag
+      if (!isRunning) return;
+
       mouse.x += (mouse.targetX - mouse.x) * 0.08;
       mouse.y += (mouse.targetY - mouse.y) * 0.08;
 
-      setOffset({
-        x: mouse.x * intensity,
-        y: mouse.y * intensity,
-      });
+      const newX = Math.round(mouse.x * intensity * 100) / 100;
+      const newY = Math.round(mouse.y * intensity * 100) / 100;
+
+      if (Math.abs(newX - lastX) > 0.01 || Math.abs(newY - lastY) > 0.01) {
+        lastX = newX;
+        lastY = newY;
+        setOffset({ x: newX, y: newY });
+      }
 
       animationFrameId = requestAnimationFrame(animate);
     };
@@ -48,6 +62,7 @@ export function useMouseParallax(intensity: number = 1) {
     animationFrameId = requestAnimationFrame(animate);
 
     return () => {
+      isRunning = false;
       window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(animationFrameId);
     };

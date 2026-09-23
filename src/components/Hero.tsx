@@ -18,9 +18,33 @@ export const Hero: React.FC<HeroProps> = ({ onWatchStory, onExploreClick }) => {
 
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   // Smooth mouse parallax for desktop
   const mouseOffset = useMouseParallax(1);
+
+  // Monitor video playback readiness to prevent black screen or decoding glitch
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (video.currentTime > 0 && !video.paused && !video.ended && video.readyState >= 2) {
+      setIsVideoReady(true);
+    }
+
+    const handlePlaying = () => setIsVideoReady(true);
+    const handleTimeUpdate = () => {
+      if (video.currentTime > 0) setIsVideoReady(true);
+    };
+
+    video.addEventListener('playing', handlePlaying);
+    video.addEventListener('timeupdate', handleTimeUpdate);
+
+    return () => {
+      video.removeEventListener('playing', handlePlaying);
+      video.removeEventListener('timeupdate', handleTimeUpdate);
+    };
+  }, []);
 
   // GSAP entrance and ScrollTrigger depth layers (Desktop only)
   useEffect(() => {
@@ -106,9 +130,21 @@ export const Hero: React.FC<HeroProps> = ({ onWatchStory, onExploreClick }) => {
     >
       {/* ============================================================== */}
       {/* 1. UNIFIED FULL-BLEED VIDEO BACKGROUND                         */}
-      {/* Single video instance eliminates decoder conflicts & flicker   */}
+      {/* Zero black flash: Poster renders immediately; video fades in   */}
       {/* ============================================================== */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden z-0 pointer-events-none">
+      <div className="absolute inset-0 w-full h-full overflow-hidden z-0 pointer-events-none bg-[#161B14]">
+        {/* Instant High-Res Poster Image Layer (Zero Black Screen Gap) */}
+        <img
+          src="/images/video_poster.jpg"
+          alt="Purita Botanical Waterfalls"
+          fetchPriority="high"
+          decoding="sync"
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-out z-[1] ${
+            isVideoReady ? 'opacity-0 pointer-events-none' : 'opacity-100'
+          }`}
+        />
+
+        {/* Video Element: Fades in only once live frames are actually rendering */}
         <video
           ref={videoRef}
           src="/assets/video.mp4"
@@ -118,7 +154,10 @@ export const Hero: React.FC<HeroProps> = ({ onWatchStory, onExploreClick }) => {
           muted={isMuted}
           playsInline
           preload="auto"
-          className="w-full h-full object-cover object-center"
+          onPlaying={() => setIsVideoReady(true)}
+          className={`w-full h-full object-cover object-center transition-opacity duration-700 ease-out z-0 ${
+            isVideoReady ? 'opacity-100' : 'opacity-0'
+          }`}
           style={{
             transform: 'translate3d(0, 0, 0)',
             backfaceVisibility: 'hidden',
@@ -126,14 +165,14 @@ export const Hero: React.FC<HeroProps> = ({ onWatchStory, onExploreClick }) => {
           }}
         />
 
-        {/* Mobile Scrims (< 768px) */}
-        <div className="md:hidden absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/30 pointer-events-none" />
-        <div className="md:hidden absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/40 pointer-events-none" />
+        {/* Mobile Scrims (< 768px) - Rendered over poster & video at z-[2] */}
+        <div className="md:hidden absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/30 pointer-events-none z-[2]" />
+        <div className="md:hidden absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/40 pointer-events-none z-[2]" />
 
-        {/* Desktop Scrims (>= 768px) */}
-        <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-[#141A12]/90 via-[#141A12]/60 sm:via-[#141A12]/45 to-transparent/30 pointer-events-none" />
-        <div className="hidden md:block absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/55 pointer-events-none" />
-        <div className="hidden md:block absolute top-1/4 right-1/4 w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-amber-200/10 rounded-full blur-3xl pointer-events-none" />
+        {/* Desktop Scrims (>= 768px) - Rendered over poster & video at z-[2] */}
+        <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-[#141A12]/90 via-[#141A12]/60 sm:via-[#141A12]/45 to-transparent/30 pointer-events-none z-[2]" />
+        <div className="hidden md:block absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/55 pointer-events-none z-[2]" />
+        <div className="hidden md:block absolute top-1/4 right-1/4 w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-amber-200/10 rounded-full blur-3xl pointer-events-none z-[2]" />
       </div>
 
       {/* ============================================================== */}
@@ -194,9 +233,6 @@ export const Hero: React.FC<HeroProps> = ({ onWatchStory, onExploreClick }) => {
             transition: 'transform 0.15s ease-out',
           }}
         >
-          <div className="absolute top-28 left-6 md:left-20 w-10 h-20 bg-emerald-400/10 rounded-full rotate-45 blur-md" />
-          <div className="absolute bottom-32 right-16 w-14 h-28 bg-amber-400/10 rounded-full -rotate-12 blur-lg" />
-        </div>
           <div className="absolute top-28 left-6 md:left-20 w-10 h-20 bg-emerald-400/10 rounded-full rotate-45 blur-md" />
           <div className="absolute bottom-32 right-16 w-14 h-28 bg-amber-400/10 rounded-full -rotate-12 blur-lg" />
         </div>
