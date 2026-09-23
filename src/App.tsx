@@ -13,6 +13,7 @@ import { EditorialBanner } from './components/EditorialBanner';
 import { Ingredients } from './components/Ingredients';
 import { HorizontalIngredients } from './components/HorizontalIngredients';
 import { MakingProcess } from './components/MakingProcess';
+import { Testimonial } from './components/Testimonial';
 import { StorySection } from './components/StorySection';
 import { Footer } from './components/Footer';
 import { CartDrawer } from './components/CartDrawer';
@@ -92,6 +93,7 @@ export const App: React.FC = () => {
         <Ingredients />
         <HorizontalIngredients />
         <MakingProcess />
+        <Testimonial />
         <StorySection onStoryClick={() => setIsVideoModalOpen(true)} />
       </main>
 

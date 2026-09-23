@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { ArrowUpRight, ArrowRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FEATURED_INGREDIENTS } from '../data/ingredients';
@@ -40,86 +40,13 @@ export const Ingredients: React.FC = () => {
     el?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const concerns = [
-    {
-      id: 'dry-skin',
-      title: 'Dry Skin',
-      count: '5 products',
-      image: '/images/ingredient_sandalwood.jpg',
-    },
-    {
-      id: 'sensitive-skin',
-      title: 'Sensitive Skin',
-      count: '4 products',
-      image: '/images/ingredient_aloe.jpg',
-    },
-    {
-      id: 'acne-prone',
-      title: 'Acne Prone',
-      count: '4 products',
-      image: '/images/ingredient_neem_lime.jpg',
-    },
-  ];
-
   return (
     <section
       id="ingredients"
       ref={sectionRef}
-      className="bg-cream relative overflow-hidden"
+      className="hidden md:block bg-cream relative overflow-hidden py-24 md:py-36"
     >
-      {/* ============================================================== */}
-      {/* MOBILE SHOP BY CONCERN CAROUSEL (< 768px)                     */}
-      {/* ============================================================== */}
-      <div className="md:hidden py-10 px-5">
-        <div className="flex items-center justify-between mb-5">
-          <div>
-            <h2 className="font-serif text-[28px] sm:text-[32px] text-botanical font-normal leading-tight">
-              Shop by Concern
-            </h2>
-          </div>
-          <button
-            onClick={scrollToGallery}
-            className="text-xs font-semibold text-botanical hover:text-botanical-forest flex items-center gap-1 shrink-0"
-          >
-            <span>View All</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        {/* Horizontal Category Carousel */}
-        <div className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2 -mx-5 px-5">
-          {concerns.map((c) => (
-            <div
-              key={c.id}
-              onClick={scrollToGallery}
-              className="w-[160px] h-[190px] shrink-0 snap-start rounded-[12px] overflow-hidden relative shadow-sm flex flex-col justify-end p-3.5 cursor-pointer group"
-            >
-              <img
-                src={c.image}
-                alt={c.title}
-                loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent z-10" />
-
-              <div className="relative z-20 space-y-0.5">
-                <h3 className="font-serif text-sm text-white font-medium leading-tight">
-                  {c.title}
-                </h3>
-                <p className="text-[10px] text-white/75 font-light">
-                  {c.count}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ============================================================== */}
-      {/* DESKTOP FEATURED INGREDIENTS (>= 768px, UNTOUCHED)             */}
-      {/* ============================================================== */}
-      <div className="hidden md:block py-24 md:py-36">
-        <div className="max-w-site mx-auto px-5 sm:px-8 md:px-12 lg:px-16">
+      <div className="max-w-site mx-auto px-5 sm:px-8 md:px-12 lg:px-16">
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 md:mb-20">
             <div className="max-w-xl space-y-4">

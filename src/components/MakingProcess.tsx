@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Leaf, Sparkles, Droplet, ShieldCheck, Heart } from 'lucide-react';
+import { Leaf, Sparkles, Droplet, ShieldCheck, Heart, Play, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -77,9 +77,49 @@ export const MakingProcess: React.FC = () => {
     <section
       id="craftsmanship"
       ref={sectionRef}
-      className="py-24 md:py-36 bg-[#EEE9DE] relative overflow-hidden"
+      className="py-12 md:py-36 bg-[#F7F5EE] relative overflow-hidden"
     >
-      <div className="max-w-site mx-auto px-5 sm:px-8 md:px-12 lg:px-16">
+      {/* MOBILE PHILOSOPHY LAYOUT (<= 767px) */}
+      <div className="md:hidden px-5 w-full max-w-[430px] mx-auto">
+        <div className="mb-2">
+          <span className="text-[10px] font-semibold tracking-[0.2em] text-[#556B2F] uppercase block mb-1.5">
+            OUR PHILOSOPHY
+          </span>
+          <h2 className="font-serif text-[28px] sm:text-[32px] text-[#1A3323] font-normal leading-[1.15] mb-2.5">
+            From Nature<br />
+            To Your Skin
+          </h2>
+          <p className="text-[#3A4F3F]/80 text-[13px] font-light leading-relaxed mb-4">
+            We source the purest botanicals and craft them into skincare that nourishes, protects and respects your natural beauty.
+          </p>
+          <a
+            href="#story"
+            className="inline-flex items-center gap-1.5 bg-[#1B3828] text-cream text-[13px] px-5 py-2.5 rounded-full font-medium active:scale-95 transition-transform mb-6"
+          >
+            <span>Learn More</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </a>
+        </div>
+
+        {/* Video / Visual Card with Play Button */}
+        <div className="relative rounded-[16px] overflow-hidden shadow-md w-full aspect-[16/10] bg-black/10 group cursor-pointer">
+          <img
+            src="/images/philosophy_video_card.jpg"
+            alt="From Nature To Your Skin - Botanical Skincare"
+            loading="lazy"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          />
+          {/* Centered Play Button */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full bg-white/85 backdrop-blur-sm flex items-center justify-center text-[#1B3828] shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <Play className="w-5 h-5 fill-current ml-0.5" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* DESKTOP CRAFTSMANSHIP LAYOUT (>= 768px) */}
+      <div className="hidden md:block max-w-site mx-auto px-5 sm:px-8 md:px-12 lg:px-16">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20 space-y-4">
           <div className="inline-flex items-center gap-3">

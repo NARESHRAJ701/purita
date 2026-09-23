@@ -253,6 +253,7 @@ export const ProductRange: React.FC<ProductRangeProps> = ({ products, onSelectPr
           ))}
         </div>
       </div>
+      </div>
     </section>
   );
 };

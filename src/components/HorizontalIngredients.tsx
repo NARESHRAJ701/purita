@@ -6,6 +6,17 @@ import { HORIZONTAL_INGREDIENTS } from '../data/ingredients';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const MOBILE_INGREDIENTS = [
+  { id: 'turmeric', name: 'Turmeric', benefit: 'Brightening', image: '/images/ingredient_turmeric_real.jpg' },
+  { id: 'aloe', name: 'Aloe Vera', benefit: 'Soothing', image: '/images/ingredient_aloe_real.jpg' },
+  { id: 'coconut', name: 'Coconut Oil', benefit: 'Moisturizing', image: '/images/ingredient_coconut_real.jpg' },
+  { id: 'neem', name: 'Neem', benefit: 'Purifying', image: '/images/ingredient_neem_lime.jpg' },
+  { id: 'teatree', name: 'Tea Tree', benefit: 'Clarifying', image: '/images/ingredient_teatree.jpg' },
+  { id: 'chamomile', name: 'Chamomile', benefit: 'Calming', image: '/images/ingredient_saffron_real.jpg' },
+  { id: 'sandalwood', name: 'Sandalwood', benefit: 'Nourishing', image: '/images/ingredient_sandalwood.jpg' },
+  { id: 'tulsi', name: 'Tulsi', benefit: 'Rejuvenating', image: '/images/ingredient_jojoba.jpg' },
+];
+
 export const HorizontalIngredients: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -49,9 +60,49 @@ export const HorizontalIngredients: React.FC = () => {
       ref={sectionRef}
       className="relative bg-botanical-dark text-cream overflow-hidden"
     >
+      {/* MOBILE INGREDIENTS LAYOUT (<= 767px) */}
+      <div className="md:hidden py-12 px-5">
+        {/* Mobile Header */}
+        <div className="flex items-start justify-between gap-4 mb-6">
+          <h2 className="font-serif text-[26px] sm:text-3xl text-cream font-normal leading-[1.1]">
+            From the earth,<br />
+            <span className="italic font-serif text-[#7ECBA1]">into every bath.</span>
+          </h2>
+          <p className="text-cream/65 text-[11px] sm:text-xs text-right max-w-[130px] font-light leading-snug pt-1">
+            Nature's finest ingredients, crafted for your skin.
+          </p>
+        </div>
+
+        {/* 2-Column Grid */}
+        <div className="grid grid-cols-2 gap-3 w-full">
+          {MOBILE_INGREDIENTS.map((item) => (
+            <div
+              key={item.id}
+              className="bg-white/[0.05] border border-white/10 rounded-2xl p-4 flex flex-col items-center text-center transition-all duration-200 active:scale-[0.98] shadow-sm backdrop-blur-sm"
+            >
+              <div className="w-14 h-14 rounded-full overflow-hidden border border-white/20 p-0.5 mb-2.5 bg-black/25 flex-shrink-0">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  loading="lazy"
+                  className="w-full h-full object-cover rounded-full"
+                />
+              </div>
+              <h3 className="font-serif text-cream font-medium text-[13px] tracking-wide">
+                {item.name}
+              </h3>
+              <p className="text-cream/60 text-[11px] mt-0.5 font-light">
+                {item.benefit}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* DESKTOP INGREDIENTS LAYOUT (>= 768px) */}
       <div
         ref={triggerRef}
-        className="min-h-screen flex flex-col justify-center py-16 lg:py-24 relative"
+        className="hidden md:flex min-h-screen flex-col justify-center py-16 lg:py-24 relative"
       >
         {/* Ambient Botanical Glow */}
         <div className="absolute top-1/4 -left-32 w-96 h-96 bg-botanical-forest/20 rounded-full blur-3xl pointer-events-none" />
@@ -146,11 +197,6 @@ export const HorizontalIngredients: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Mobile Swipe Hint */}
-        <div className="lg:hidden flex items-center justify-center gap-2 text-xs text-cream/50 pt-2">
-          <span>Swipe horizontally to view all ingredients</span>
         </div>
       </div>
     </section>
