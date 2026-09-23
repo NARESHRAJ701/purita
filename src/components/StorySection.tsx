@@ -38,7 +38,7 @@ export const StorySection: React.FC<StorySectionProps> = ({ onStoryClick }) => {
     <section
       id="story"
       ref={sectionRef}
-      className="py-24 md:py-36 bg-[#FAF8F2] relative overflow-hidden"
+      className="pt-16 md:pt-20 pb-10 md:pb-14 bg-[#FAF8F2] relative overflow-hidden"
     >
       <div className="max-w-site mx-auto px-5 sm:px-8 md:px-12 lg:px-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">

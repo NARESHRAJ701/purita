@@ -14,7 +14,6 @@ import { Ingredients } from './components/Ingredients';
 import { HorizontalIngredients } from './components/HorizontalIngredients';
 import { MakingProcess } from './components/MakingProcess';
 import { StorySection } from './components/StorySection';
-import { NatureDivider } from './components/NatureDivider';
 import { Footer } from './components/Footer';
 import { CartDrawer } from './components/CartDrawer';
 import { ProductQuickView } from './components/ProductQuickView';
@@ -94,7 +93,6 @@ export const App: React.FC = () => {
         <HorizontalIngredients />
         <MakingProcess />
         <StorySection onStoryClick={() => setIsVideoModalOpen(true)} />
-        <NatureDivider />
       </main>
 
       {/* Footer */}

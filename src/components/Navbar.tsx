@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ShoppingBag, Menu, X, ArrowUpRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
@@ -7,22 +7,8 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onShopClick }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { totalItems, openCart } = useCart();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 40) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const navLinks = [
     { label: 'Home', href: '#hero' },
@@ -42,13 +28,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onShopClick }) => {
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-          isScrolled
-            ? 'bg-[#F6F3ED]/92 backdrop-blur-md border-b border-subtleBorder/30 py-3.5 shadow-sm'
-            : 'bg-transparent py-6 md:py-8 border-b border-transparent'
-        }`}
-      >
+      <header className="absolute top-0 left-0 w-full z-30 py-6 md:py-8 bg-transparent">
         <div className="max-w-site mx-auto px-5 sm:px-8 md:px-12 lg:px-16 flex items-center justify-between">
           {/* Logo Left */}
           <a
