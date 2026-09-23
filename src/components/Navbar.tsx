@@ -28,7 +28,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onShopClick }) => {
 
   return (
     <>
-      <header className="sticky top-0 left-0 w-full z-40 h-[68px] sm:h-[72px] md:h-[76px] lg:h-[80px] bg-[#FAF8F2] border-b border-[rgba(36,59,38,0.10)] transition-colors">
+      <header className="relative w-full z-40 h-[68px] sm:h-[72px] md:h-[76px] lg:h-[80px] bg-[#FAF8F2] border-b border-[rgba(36,59,38,0.10)] transition-colors">
         <div className="max-w-site mx-auto px-5 sm:px-8 md:px-12 lg:px-16 h-full flex items-center justify-between">
           {/* Logo Left */}
           <a

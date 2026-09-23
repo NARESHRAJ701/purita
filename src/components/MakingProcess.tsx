@@ -113,17 +113,19 @@ export const MakingProcess: React.FC = () => {
         </div>
 
         {/* 5 Interactive Steps: Stacking Deck on Mobile (< 768px), 5-Col Grid on Desktop (>= 768px) */}
-        <div className="relative flex flex-col md:grid md:grid-cols-2 lg:grid-cols-5 gap-0 md:gap-6 pb-14 md:pb-0">
+        <div className="relative flex flex-col md:grid md:grid-cols-2 lg:grid-cols-5 gap-0 md:gap-6 pb-20 md:pb-0">
           {steps.map((item, idx) => {
             const Icon = item.icon;
             const isSelected = activeStep === idx;
+            const isLast = idx === steps.length - 1;
             return (
               <div
                 key={idx}
                 onClick={() => setActiveStep(idx)}
-                className={`process-card-anim cursor-pointer p-5 sm:p-6 rounded-[22px] sm:rounded-[24px] border transition-all duration-300
-                  sticky md:static mb-5 md:mb-0 bg-white
-                  shadow-[0_10px_30px_rgba(0,0,0,0.07)] md:shadow-none
+                className={`cursor-pointer p-5 sm:p-6 rounded-[22px] sm:rounded-[24px] border transition-all duration-300
+                  sticky md:static bg-[#FAF8F2] md:bg-white
+                  ${isLast ? 'mb-0' : 'mb-14 sm:mb-16 md:mb-0'}
+                  shadow-[0_8px_28px_rgba(36,59,38,0.09)] md:shadow-none
                   ${
                     isSelected
                       ? 'border-botanical-forest ring-1 ring-botanical-forest/30'
@@ -131,7 +133,7 @@ export const MakingProcess: React.FC = () => {
                   }
                 `}
                 style={{
-                  top: `calc(76px + ${idx * 20}px)`,
+                  top: `calc(24px + ${idx * 24}px)`,
                   zIndex: 10 + idx,
                 }}
               >

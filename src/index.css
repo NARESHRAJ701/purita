@@ -167,7 +167,7 @@ html.lenis, html.lenis body {
 /* Mobile Global System */
 @media (max-width: 767px) {
   html, body {
-    overflow-x: hidden;
+    overflow-x: clip;
     width: 100%;
   }
   * {
