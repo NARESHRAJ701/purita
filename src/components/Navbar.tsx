@@ -28,7 +28,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onShopClick }) => {
 
   return (
     <>
-      <header className="sticky top-0 left-0 w-full z-40 h-[68px] sm:h-[72px] md:h-[76px] lg:h-[80px] bg-[#e5e7eb] border-b border-[#d1d5db] transition-colors">
+      <header className="sticky top-0 left-0 w-full z-40 h-[68px] sm:h-[72px] md:h-[76px] lg:h-[80px] bg-[#FAF8F2] border-b border-[rgba(36,59,38,0.10)] transition-colors">
         <div className="max-w-site mx-auto px-5 sm:px-8 md:px-12 lg:px-16 h-full flex items-center justify-between">
           {/* Logo Left */}
           <a
@@ -53,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onShopClick }) => {
                   e.preventDefault();
                   handleLinkClick(link.href);
                 }}
-                className="text-[14px] font-sans font-medium text-black hover:text-stone-700 transition-colors tracking-wide relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-black after:transition-all after:duration-300 hover:after:w-full"
+                className="text-[14px] font-sans font-medium text-black hover:text-[#243B26] transition-colors tracking-wide relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-black after:transition-all after:duration-300 hover:after:w-full"
               >
                 {link.label}
               </a>
@@ -103,7 +103,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onShopClick }) => {
 
       {/* Mobile Fullscreen Overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-[120] bg-[#e5e7eb] flex flex-col justify-between p-6 sm:p-10 animate-fade-in lg:hidden">
+        <div className="fixed inset-0 z-[120] bg-[#FAF8F2] flex flex-col justify-between p-6 sm:p-10 animate-fade-in lg:hidden">
           <div className="flex items-center justify-between">
             <img
               src="/images/purita_logo.png"

@@ -15,12 +15,20 @@ export const Hero: React.FC<HeroProps> = ({ onWatchStory, onExploreClick }) => {
   const heroRef = useRef<HTMLElement>(null);
   const textGroupRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const mobileVideoRef = useRef<HTMLVideoElement>(null);
 
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
 
   // Smooth mouse parallax for desktop
   const mouseOffset = useMouseParallax(1);
+
+  // Ensure mobile video plays smoothly
+  useEffect(() => {
+    if (mobileVideoRef.current) {
+      mobileVideoRef.current.play().catch(() => {});
+    }
+  }, []);
 
   // GSAP entrance and ScrollTrigger depth layers
   useEffect(() => {
@@ -101,21 +109,26 @@ export const Hero: React.FC<HeroProps> = ({ onWatchStory, onExploreClick }) => {
       className="relative overflow-hidden bg-[#161B14]"
     >
       {/* ============================================================== */}
-      {/* MOBILE IMAGE-LED HERO (< 768px)                                */}
+      {/* MOBILE VIDEO-LED HERO (< 768px)                                */}
       {/* ============================================================== */}
       <div className="md:hidden relative w-full h-[540px] sm:h-[580px] overflow-hidden flex items-center bg-[#161B14]">
-        {/* Background Image: Waterfall & Soap on Rock */}
-        <div
-          className="absolute inset-0 w-full h-full bg-cover pointer-events-none"
-          style={{
-            backgroundImage: 'url(/images/editorial_waterfall_soap.jpg)',
-            backgroundPosition: 'center 40%',
-          }}
-        />
-
-        {/* Natural Dark Gradient Scrim on Left for Clean Typography Contrast */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-transparent/20 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
+        {/* Full-Bleed Video Background */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
+          <video
+            ref={mobileVideoRef}
+            src="/assets/video.mp4"
+            poster="/images/editorial_waterfall_soap.jpg"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="w-full h-full object-cover object-center scale-[1.02]"
+          />
+          {/* Natural Dark Gradient Scrims for Clean Typography Contrast */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/30 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/40 pointer-events-none" />
+        </div>
 
         {/* Script Accent on Right */}
         <div className="absolute bottom-12 right-5 z-20 pointer-events-none select-none">

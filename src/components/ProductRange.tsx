@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { ArrowUpRight, ArrowRight, Plus, Eye, Star, ShoppingBag } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { ArrowUpRight, Plus, Eye, Star, ShoppingBag, ChevronLeft, ChevronRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Product } from '../data/products';
@@ -14,10 +14,73 @@ interface ProductRangeProps {
 
 export const ProductRange: React.FC<ProductRangeProps> = ({ products, onSelectProduct }) => {
   const sectionRef = useRef<HTMLElement>(null);
+  const mobileCarouselRef = useRef<HTMLDivElement>(null);
   const { addToCart } = useCart();
+
+  // Mobile carousel navigation & drag state
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [activeMobileIndex, setActiveMobileIndex] = useState(0);
+
+  // Mouse drag support for smooth swipe/moveable on all viewports
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollStart, setScrollStart] = useState(0);
+  const [hasMoved, setHasMoved] = useState(false);
 
   // Take the primary 3 soaps as highlighted in specs
   const primaryProducts = products.slice(0, 3);
+
+  const checkScroll = () => {
+    const el = mobileCarouselRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 10);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
+    const cardWidth = 224; // card width + gap
+    const index = Math.round(el.scrollLeft / cardWidth);
+    setActiveMobileIndex(Math.min(Math.max(index, 0), products.length - 1));
+  };
+
+  const scrollCarousel = (direction: 'left' | 'right') => {
+    const el = mobileCarouselRef.current;
+    if (!el) return;
+    const scrollAmount = 230;
+    el.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
+  };
+
+  const scrollToProductIndex = (idx: number) => {
+    const el = mobileCarouselRef.current;
+    if (!el) return;
+    const cardWidth = 224;
+    el.scrollTo({
+      left: idx * cardWidth,
+      behavior: 'smooth',
+    });
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsMouseDown(true);
+    setHasMoved(false);
+    setStartX(e.pageX - (mobileCarouselRef.current?.offsetLeft || 0));
+    setScrollStart(mobileCarouselRef.current?.scrollLeft || 0);
+  };
+
+  const handleMouseLeaveOrUp = () => {
+    setIsMouseDown(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isMouseDown || !mobileCarouselRef.current) return;
+    const x = e.pageX - (mobileCarouselRef.current.offsetLeft || 0);
+    const walk = (x - startX) * 1.3;
+    if (Math.abs(walk) > 4) {
+      setHasMoved(true);
+    }
+    mobileCarouselRef.current.scrollLeft = scrollStart - walk;
+  };
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -55,8 +118,8 @@ export const ProductRange: React.FC<ProductRangeProps> = ({ products, onSelectPr
       {/* MOBILE BESTSELLERS CAROUSEL (< 768px)                          */}
       {/* ============================================================== */}
       <div className="md:hidden py-10 px-5">
-        {/* Mobile Header */}
-        <div className="flex items-end justify-between mb-5">
+        {/* Mobile Header with Moveable Navigation Buttons */}
+        <div className="flex items-end justify-between mb-4">
           <div>
             <h2 className="font-serif text-[28px] sm:text-[32px] text-botanical font-normal leading-tight">
               Our Bestsellers
@@ -65,17 +128,49 @@ export const ProductRange: React.FC<ProductRangeProps> = ({ products, onSelectPr
               Loved by nature lovers everywhere.
             </p>
           </div>
-          <button
-            onClick={() => onSelectProduct(products[0])}
-            className="text-xs font-semibold text-botanical hover:text-botanical-forest flex items-center gap-1 shrink-0"
-          >
-            <span>View All</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+
+          {/* Moveable Navigation Controls: Prev / Next Buttons */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button
+              onClick={() => scrollCarousel('left')}
+              disabled={!canScrollLeft}
+              className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all ${
+                canScrollLeft
+                  ? 'bg-white border-black/10 text-botanical hover:bg-stone-100 active:scale-95 shadow-xs'
+                  : 'bg-transparent border-black/5 text-charcoal/25 cursor-not-allowed'
+              }`}
+              aria-label="Previous product"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => scrollCarousel('right')}
+              disabled={!canScrollRight}
+              className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all ${
+                canScrollRight
+                  ? 'bg-white border-black/10 text-botanical hover:bg-stone-100 active:scale-95 shadow-xs'
+                  : 'bg-transparent border-black/5 text-charcoal/25 cursor-not-allowed'
+              }`}
+              aria-label="Next product"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
-        {/* Mobile Horizontal Carousel (Shows ~1.55 cards) */}
-        <div className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-3 -mx-5 px-5">
+        {/* Mobile Horizontal Carousel (Swipeable, Draggable, & Snap) */}
+        <div
+          ref={mobileCarouselRef}
+          onScroll={checkScroll}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeaveOrUp}
+          onMouseUp={handleMouseLeaveOrUp}
+          onMouseMove={handleMouseMove}
+          className={`flex gap-3.5 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-3 -mx-5 px-5 select-none ${
+            isMouseDown ? 'cursor-grabbing' : 'cursor-grab'
+          }`}
+          style={{ touchAction: 'pan-x pan-y' }}
+        >
           {products.map((product) => (
             <div
               key={product.id}
@@ -85,20 +180,24 @@ export const ProductRange: React.FC<ProductRangeProps> = ({ products, onSelectPr
               {/* Product Image 1:1 */}
               <div
                 className="w-full aspect-square rounded-[12px] bg-white/70 flex items-center justify-center p-3 mb-3 cursor-pointer overflow-hidden shadow-xs relative"
-                onClick={() => onSelectProduct(product)}
+                onClick={() => {
+                  if (!hasMoved) onSelectProduct(product);
+                }}
               >
                 <img
                   src={product.image}
                   alt={product.name}
                   loading="lazy"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain pointer-events-none"
                 />
               </div>
 
               {/* Info */}
               <div className="space-y-1">
                 <h3
-                  onClick={() => onSelectProduct(product)}
+                  onClick={() => {
+                    if (!hasMoved) onSelectProduct(product);
+                  }}
                   className="font-serif text-[15px] sm:text-base text-botanical font-medium leading-snug cursor-pointer line-clamp-1"
                 >
                   {product.name}
@@ -115,7 +214,10 @@ export const ProductRange: React.FC<ProductRangeProps> = ({ products, onSelectPr
                 </span>
 
                 <button
-                  onClick={() => addToCart(product, 1)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addToCart(product, 1);
+                  }}
                   className="w-8 h-8 rounded-full bg-[#243B26] hover:bg-[#344D33] text-white flex items-center justify-center shadow-sm active:scale-95 transition-all"
                   aria-label={`Add ${product.name} to cart`}
                 >
@@ -124,6 +226,29 @@ export const ProductRange: React.FC<ProductRangeProps> = ({ products, onSelectPr
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Moveable Pagination Dots & Visual Swipe Hint */}
+        <div className="flex items-center justify-between pt-2 px-1">
+          <span className="text-[11px] text-charcoal/50 font-light">
+            ← Swipe to explore →
+          </span>
+
+          {/* Interactive Indicator Dots */}
+          <div className="flex items-center gap-1.5">
+            {products.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => scrollToProductIndex(idx)}
+                aria-label={`Jump to soap ${idx + 1}`}
+                className={`transition-all duration-300 rounded-full ${
+                  activeMobileIndex === idx
+                    ? 'w-5 h-1.5 bg-[#243B26]'
+                    : 'w-1.5 h-1.5 bg-black/20 hover:bg-black/40'
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </div>
 

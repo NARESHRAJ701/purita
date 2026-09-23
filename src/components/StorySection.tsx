@@ -38,7 +38,7 @@ export const StorySection: React.FC<StorySectionProps> = ({ onStoryClick }) => {
     <section
       id="story"
       ref={sectionRef}
-      className="hidden md:block pt-16 md:pt-20 pb-10 md:pb-14 bg-[#FAF8F2] relative overflow-hidden"
+      className="py-12 md:py-20 lg:py-24 bg-[#FAF8F2] relative overflow-hidden"
     >
       <div className="max-w-site mx-auto px-5 sm:px-8 md:px-12 lg:px-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -57,11 +57,11 @@ export const StorySection: React.FC<StorySectionProps> = ({ onStoryClick }) => {
               <span className="italic font-serif text-botanical-forest">years to make.</span>
             </h2>
 
-            <p className="text-charcoal/75 text-base md:text-lg font-light leading-relaxed">
+            <p className="hidden md:block text-charcoal/75 text-base md:text-lg font-light leading-relaxed">
               Three botanicals sourced from the places they grow best, combined into formulas designed around natural care. We do not use petrochemical fillers, artificial foaming detergents, or harsh synthetic stabilizers.
             </p>
 
-            <p className="text-charcoal/65 text-sm md:text-base font-light leading-relaxed">
+            <p className="hidden md:block text-charcoal/65 text-sm md:text-base font-light leading-relaxed">
               From Mysore sandalwood farms to tropical neem & lime groves and Kashmir saffron valleys, each PURITA batch honors the soil, water, and generational cultivators who nurture our raw botanicals.
             </p>
 
