@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { ArrowUpRight, Plus, Eye, Star } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Plus, Eye, Star, ShoppingBag } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Product } from '../data/products';
@@ -49,37 +49,117 @@ export const ProductRange: React.FC<ProductRangeProps> = ({ products, onSelectPr
     <section
       id="products"
       ref={sectionRef}
-      className="py-24 md:py-36 bg-[#F6F3ED] relative overflow-hidden"
+      className="bg-[#F6F3ED] relative overflow-hidden"
     >
-      <div className="max-w-site mx-auto px-5 sm:px-8 md:px-12 lg:px-16">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 md:mb-20">
-          <div className="max-w-xl space-y-4">
-            <div className="flex items-center gap-3">
-              <span className="w-8 h-[1px] bg-botanical-forest/50" />
-              <span className="text-xs font-semibold tracking-[0.25em] text-botanical-forest uppercase">
-                Our Range
-              </span>
-            </div>
-            <h2 className="section-heading font-serif text-botanical font-normal">
-              Nature's Best,<br />
-              <span className="italic font-serif">For Every You.</span>
+      {/* ============================================================== */}
+      {/* MOBILE BESTSELLERS CAROUSEL (< 768px)                          */}
+      {/* ============================================================== */}
+      <div className="md:hidden py-10 px-5">
+        {/* Mobile Header */}
+        <div className="flex items-end justify-between mb-5">
+          <div>
+            <h2 className="font-serif text-[28px] sm:text-[32px] text-botanical font-normal leading-tight">
+              Our Bestsellers
             </h2>
-            <p className="text-charcoal/70 text-base md:text-lg font-light leading-relaxed">
-              Three unique blends. One pure promise. Choose the blend your skin deserves, crafted with traditional cold-pressed herbal wisdom.
+            <p className="text-xs text-charcoal/70 font-light mt-0.5">
+              Loved by nature lovers everywhere.
             </p>
           </div>
-
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => onSelectProduct(primaryProducts[0])}
-              className="btn-botanical text-sm px-6 py-3"
-            >
-              <span>View All Formulas</span>
-              <ArrowUpRight className="w-4 h-4 btn-arrow" />
-            </button>
-          </div>
+          <button
+            onClick={() => onSelectProduct(products[0])}
+            className="text-xs font-semibold text-botanical hover:text-botanical-forest flex items-center gap-1 shrink-0"
+          >
+            <span>View All</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
         </div>
+
+        {/* Mobile Horizontal Carousel (Shows ~1.55 cards) */}
+        <div className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-3 -mx-5 px-5">
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="w-[210px] sm:w-[230px] shrink-0 snap-start rounded-[16px] p-3.5 flex flex-col justify-between border border-black/[0.06] shadow-sm transition-all"
+              style={{ backgroundColor: product.theme.bg }}
+            >
+              {/* Product Image 1:1 */}
+              <div
+                className="w-full aspect-square rounded-[12px] bg-white/70 flex items-center justify-center p-3 mb-3 cursor-pointer overflow-hidden shadow-xs relative"
+                onClick={() => onSelectProduct(product)}
+              >
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  loading="lazy"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+
+              {/* Info */}
+              <div className="space-y-1">
+                <h3
+                  onClick={() => onSelectProduct(product)}
+                  className="font-serif text-[15px] sm:text-base text-botanical font-medium leading-snug cursor-pointer line-clamp-1"
+                >
+                  {product.name}
+                </h3>
+                <p className="text-[11px] text-charcoal/60 font-light line-clamp-1">
+                  {product.subtitle}
+                </p>
+              </div>
+
+              {/* Price & Cart */}
+              <div className="pt-3 mt-2 border-t border-black/[0.06] flex items-center justify-between">
+                <span className="font-serif text-sm font-bold text-botanical">
+                  ₹{product.price}
+                </span>
+
+                <button
+                  onClick={() => addToCart(product, 1)}
+                  className="w-8 h-8 rounded-full bg-[#243B26] hover:bg-[#344D33] text-white flex items-center justify-center shadow-sm active:scale-95 transition-all"
+                  aria-label={`Add ${product.name} to cart`}
+                >
+                  <ShoppingBag className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ============================================================== */}
+      {/* DESKTOP 3-CARD EDITORIAL GRID (>= 768px, UNTOUCHED)            */}
+      {/* ============================================================== */}
+      <div className="hidden md:block py-24 md:py-36">
+        <div className="max-w-site mx-auto px-5 sm:px-8 md:px-12 lg:px-16">
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 md:mb-20">
+            <div className="max-w-xl space-y-4">
+              <div className="flex items-center gap-3">
+                <span className="w-8 h-[1px] bg-botanical-forest/50" />
+                <span className="text-xs font-semibold tracking-[0.25em] text-botanical-forest uppercase">
+                  Our Range
+                </span>
+              </div>
+              <h2 className="section-heading font-serif text-botanical font-normal">
+                Nature's Best,<br />
+                <span className="italic font-serif">For Every You.</span>
+              </h2>
+              <p className="text-charcoal/70 text-base md:text-lg font-light leading-relaxed">
+                Three unique blends. One pure promise. Choose the blend your skin deserves, crafted with traditional cold-pressed herbal wisdom.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => onSelectProduct(primaryProducts[0])}
+                className="btn-botanical text-sm px-6 py-3"
+              >
+                <span>View All Formulas</span>
+                <ArrowUpRight className="w-4 h-4 btn-arrow" />
+              </button>
+            </div>
+          </div>
 
         {/* 3 Editorial Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">

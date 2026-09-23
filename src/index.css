@@ -163,3 +163,17 @@ html.lenis, html.lenis body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Mobile Global System */
+@media (max-width: 767px) {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  :root {
+    --mobile-padding: 20px;
+  }
+}
